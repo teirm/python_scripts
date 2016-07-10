@@ -5,12 +5,14 @@ Purpose: Given user input, cleanly display the wikipedia summary for the input.
 Author: Cyrus Ramavarapu
 Date: 10 July 2016
 """
+
+import sys
 import pprint
 
 import requests
 from bs4 import BeautifulSoup
 
-BASE_URL = "http://en.wikipedia.org/wiki/kittens"
+BASE_URL = "http://en.wikipedia.org/wiki/"
 
 def get_content(section_url):
 
@@ -32,5 +34,23 @@ def get_content(section_url):
     summary_pp.pprint(summary)
     print(section_url)
 
+
+def create_search_url(search_terms):
+    """
+    Joins the words in entered search with under scores
+    and appends them to the BASE_URL
+
+    Keyword arguments:
+    search_terms -- words consisten of search
+
+    Returns: string
+    """
+    underscored_string = search_terms[1]
+    for term in search_terms[2:]:
+        underscored_string = ('_').join([underscored_string, term])
+
+    return BASE_URL + underscored_string
+
 if __name__ == '__main__':
-    get_content(BASE_URL)
+    SEARCH_URL = create_search_url(sys.argv)
+    get_content(SEARCH_URL)
